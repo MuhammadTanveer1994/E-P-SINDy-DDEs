@@ -42,7 +42,7 @@ evalCount =0;
             case {'Rossler1', 'Rossler2'}
                 [g,phi,par,tspan,X_data, DX,Xi,Theta_all,x_sindy,x_sol] = Eopt(model, [params.tau1, params.tau2]);
             case 'MG'
-               [g,phi,par,tspan,X_data, DX,Xi,Theta_all,x_sindy,x_sol] = Eopt(model, params.tau, [par(1),par(2),params.par3]);
+               [g,phi,par,tspan,X_data, DX,Xi,Theta_all,x_sindy,x_sol] = Eopt(model, params.tau, [params.par3]);
             otherwise
                 [g,phi,par,tspan,X_data, DX,Xi,Theta_all,x_sindy,x_sol]  = Eopt(model, params.tau);
         end
