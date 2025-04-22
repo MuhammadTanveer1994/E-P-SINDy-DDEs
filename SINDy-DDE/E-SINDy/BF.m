@@ -24,11 +24,11 @@ function [bestTau, evalCount, elapsedtime, Theta_all, DX, X_data,bestPar3] = BF(
             tau2Grid = linspace(1, 3, 100); 
 
         case 'MG'
-            tauGrid  = linspace(0.1, 2, 10);   
-            par3Grid = linspace(0.1, 20, 10);  
+            tauGrid  = linspace(0.1, 2, 100);   
+            par3Grid = linspace(0.1, 20, 100);  
 
         otherwise
-            tauGrid = linspace(0.1, 1.5, 100);
+            tauGrid = linspace(0.1, 1.5, 1000);
     end
 
 
@@ -45,7 +45,7 @@ function [bestTau, evalCount, elapsedtime, Theta_all, DX, X_data,bestPar3] = BF(
                     [g, phi, par, tspan, X_data, DX, Xi, Theta_all] = ...
                         Eopt(model, [tau1Grid(i), tau2Grid(j)]);
                     evalCount = evalCount + 1;
-                    currentError = norm(DX_true - Theta_all * Xi, 2);%+ norm(x_sol   - x_sindy,       2)
+                    currentError = norm(DX_true - Theta_all * Xi, 2);
                     errors2D(i,j) = currentError;
                     if currentError < bestError
                         bestError      = currentError;
@@ -89,7 +89,7 @@ function [bestTau, evalCount, elapsedtime, Theta_all, DX, X_data,bestPar3] = BF(
 
                     evalCount = evalCount + 1;
 
-                    currentError = norm(DX_true - Theta_all * Xi, 2);%+ norm(x_sol   - x_sindy,       2)
+                    currentError = norm(DX_true - Theta_all * Xi, 2) ;
 
                     errors2D(i,j) = currentError;
 
@@ -203,7 +203,7 @@ function [bestTau, evalCount, elapsedtime, Theta_all, DX, X_data,bestPar3] = BF(
 
                 evalCount = evalCount + 1;
 
-                currentError = norm(DX_true - Theta_all * Xi, 2);%+ norm(x_sol   - x_sindy,       2)
+                currentError = norm(DX_true - Theta_all * Xi, 2);
 
                 errors(i) = currentError;
 
