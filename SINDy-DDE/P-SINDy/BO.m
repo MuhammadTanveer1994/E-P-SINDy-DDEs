@@ -1,11 +1,11 @@
-function [X_data,DX,Theta_all,bestTau,evalCount,elapsedtime,bestpar3] = BO(model,tau,par,DX_true, folderName) 
+function [X_data,DX,Theta_all,bestTau,evalCount,elapsedtime,bestPar3] = BO(model,tau,par,DX_true, folderName) 
 
 
 tic;   
 Xi = [];
 evalCount =0;
    switch model
-        case {'Rossler', 'DLE','TDN'}
+       case {'Rossler1', 'Rossler2','tau_3'}
             bestTau=[];
         case 'MG'
             bestTau=[];
@@ -16,13 +16,12 @@ evalCount =0;
 
 
     switch model
-        case 'Rossler'
+        case {'Rossler1','Rossler2','tau_3'}
             tauRange = optimizableVariable('tau', [1, 2.5], 'Transform','none');
-        case {'DLE','TDN'}
-            tauRange = optimizableVariable('tau', [0.1, 1.5], 'Transform','none');
+       
         case 'MG'
             tauRange = optimizableVariable('tau', [0.1, 2], 'Transform','none');
-            par3Range = optimizableVariable('par3', [0.1, 10], 'Transform','none');
+            par3Range = optimizableVariable('par3', [0.1, 20], 'Transform','none');
         otherwise
             tauRange = optimizableVariable('tau', [0.1, 1.5], 'Transform','none');
     end
@@ -31,22 +30,24 @@ evalCount =0;
 
     function objective = optimizeParameters(params)
         switch model
-            case {'Rossler', 'DLE','TDN'}
-                [g,phi,par,tspan,X_data,DX,Xi,Theta_all,x_sindy,x_sol] = Popt(model, [tau(1),params.tau],par);
+            case {'Rossler1', 'Rossler2'}
+                [g,phi,par,tspan,X_data,DX,Xi,Theta_all] = Popt(model, [tau(1),params.tau]);
+                case 'tau_3'
+                [g,phi,par,tspan,X_data,DX,Xi,Theta_all] = Popt(model, [tau(1),tau(2),params.tau]);
             case 'MG'
-               [g,phi,par,tspan,X_data,DX,Xi,Theta_all,x_sindy,x_sol] = Popt(model, params.tau, [par(1),par(2),params.par3]);
+               [g,phi,par,tspan,X_data,DX,Xi,Theta_all] = Popt(model, params.tau, [par(1),par(2),params.par3]);
             otherwise
-                [g,phi,par,tspan,X_data,DX,Xi,Theta_all,x_sindy,x_sol] = Popt(model, params.tau,par);
+                [g,phi,par,tspan,X_data,DX,Xi,Theta_all] = Popt(model, params.tau);
         end
-        err = norm(DX_true - Theta_all * Xi, 2)+norm(x_sol-x_sindy,2);
-        objective = err; % Use norm error as the objective to minimize
+        err = norm(DX_true - Theta_all * Xi, 2);
+        objective = err; 
        evalCount = evalCount + 1;
        
     end
     
     % Run Bayesian Optimization
     switch model
-            case {'Rossler', 'DLE','TDN'}
+        case {'Rossler1', 'Rossler2','tau_3'}
                 % results = bayesopt(@optimizeParameters, [tau1Range, tau2Range,lambdaRange, alphaRange], 'Verbose', 0, ...
                 %        'MaxObjectiveEvaluations', 300);
                 results = bayesopt(@optimizeParameters, tauRange, ...
@@ -81,7 +82,7 @@ evalCount =0;
 
     % Optimal lambda and alpha found by Bayesian Optimization
     switch model
-        case {'Rossler', 'DLE','TDN'}
+        case {'Rossler1', 'Rossler2','tau_3'}
 %             bestTau1 = results.XAtMinObjective.tau1;
 %             bestTau2 = results.XAtMinObjective.tau2;
             bestTau = table2array(results.XAtMinEstimatedObjective(1, 'tau'));
@@ -93,8 +94,10 @@ evalCount =0;
             bestTau = table2array(results.XAtMinEstimatedObjective(1, 'tau'));
     end 
    switch model
-        case {'Rossler', 'DLE','TDN'}
+       case {'Rossler1', 'Rossler2'}
             bestTau=[tau(1),bestTau];
+            case 'tau_3'
+            bestTau=[tau(1),tau(2),bestTau];
             case 'MG'
             bestTau=bestTau;
             bestPar=[par(1),par(2),bestPar3];
