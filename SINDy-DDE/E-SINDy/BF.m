@@ -42,11 +42,10 @@ function [bestTau, evalCount, elapsedtime, Theta_all, DX, X_data,bestPar3] = BF(
 
             for i = 1:length(tau1Grid)
                 for j = 1:length(tau2Grid)
-                    [g, phi, par, tspan, X_data, DX, Xi, Theta_all, x_sindy, x_sol] = ...
+                    [g, phi, par, tspan, X_data, DX, Xi, Theta_all] = ...
                         Eopt(model, [tau1Grid(i), tau2Grid(j)]);
                     evalCount = evalCount + 1;
-                    currentError = norm(DX_true - Theta_all * Xi, 2) + ...
-                                   norm(x_sol   - x_sindy,       2);
+                    currentError = norm(DX_true - Theta_all * Xi, 2);%+ norm(x_sol   - x_sindy,       2)
                     errors2D(i,j) = currentError;
                     if currentError < bestError
                         bestError      = currentError;
@@ -85,13 +84,12 @@ function [bestTau, evalCount, elapsedtime, Theta_all, DX, X_data,bestPar3] = BF(
 
             for i = 1:length(tauGrid)
                 for j = 1:length(par3Grid)
-                    [g, phi, par, tspan, X_data, DX, Xi, Theta_all, x_sindy, x_sol] = ...
+                    [g, phi, par, tspan, X_data, DX, Xi, Theta_all] = ...
                         Eopt(model, tauGrid(i), par3Grid(j));
 
                     evalCount = evalCount + 1;
 
-                    currentError = norm(DX_true - Theta_all * Xi, 2) + ...
-                                   norm(x_sol   - x_sindy,       2);
+                    currentError = norm(DX_true - Theta_all * Xi, 2);%+ norm(x_sol   - x_sindy,       2)
 
                     errors2D(i,j) = currentError;
 
@@ -200,13 +198,12 @@ function [bestTau, evalCount, elapsedtime, Theta_all, DX, X_data,bestPar3] = BF(
             errors = zeros(length(tauGrid), 1);
 
             for i = 1:length(tauGrid)
-                [g, phi, par, tspan, X_data, DX, Xi, Theta_all, x_sindy, x_sol] = ...
+                [g, phi, par, tspan, X_data, DX, Xi, Theta_all] = ...
                     Eopt(model, tauGrid(i));
 
                 evalCount = evalCount + 1;
 
-                currentError = norm(DX_true - Theta_all * Xi, 2) + ...
-                               norm(x_sol   - x_sindy,       2);
+                currentError = norm(DX_true - Theta_all * Xi, 2);%+ norm(x_sol   - x_sindy,       2)
 
                 errors(i) = currentError;
 
