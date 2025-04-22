@@ -2,17 +2,17 @@
 clear all; close all; clc;
 
 %% User inputs - Modify these values as needed
-model = 'MG';        % Choose from: 'DL', 'MG', 'Rossler1', 'Rossler2', 'tau_3'
-optimizer = 'PSO';    % Choose from: 'none', 'PSO' 'BO', 'BF'
+model = 'tau_3';        % Choose from: 'DL', 'MG', 'Rossler1', 'Rossler2', 'tau_3'
+optimizer = 'BO';    % Choose from: 'none', 'PSO' 'BO', 'BF'
 
 %% PSINDy Parameters
 polyorder = 2;       
-usesine = 0;        
+usesine = 1;        
 training_ratio = 0.6;
 noise_amplitude = 0;
 final_time = 30;
 num_samples = 100;
-M = 10;              % number of collocating polynomials
+M = 15;              % number of collocating polynomials
 
 %% Sparse Regression Parameters
 regression_method = 1;  % 1: Sequential Threshold, 2: LASSO
