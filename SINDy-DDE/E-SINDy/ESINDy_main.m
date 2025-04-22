@@ -2,8 +2,8 @@
 clear all; close all; clc;
 
 %% User inputs - Modify these values as needed
-model = 'MG';        % Choose from: 'DL', 'MG','Rossler1','Rossler2', 'tau_3'
-optimizer = 'none';  % Choose from: 'none', 'PSO','BO', 'BF'
+model = 'Rossler2';        % Choose from: 'DL', 'MG','Rossler1','Rossler2', 'tau_3'
+optimizer = 'PSO';  % Choose from: 'none', 'PSO','BO', 'BF'
 
 %% SINDy Parameters
 polyorder = 2;
