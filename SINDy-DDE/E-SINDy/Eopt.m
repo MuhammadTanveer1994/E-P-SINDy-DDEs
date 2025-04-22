@@ -1,4 +1,4 @@
-function [g, phi, par, tspan, X_data, DX, Xi, Theta_all, x_sindy, x_sol] = Eopt(model, tauVal, parVal)
+function [g, phi, par, tspan, X_data, DX, Xi, Theta_all] = Eopt(model, tauVal, parVal)
 
 [g,~,phi,par,n] = E_Model(model);
 if strcmp(model, 'MG')
@@ -24,14 +24,14 @@ method = 1; % '1. Sequentially Thresholded Least Square Regression', '2. LASSO R
 
 Xi = sparsifyDynamics(Theta_all, DX, lambda, alpha, n, method, k);
 
-options = ddeset('RelTol', 1e-5, 'AbsTol', 1e-5, 'MaxStep', 1e-2);
-sol = dde23(@(t,y, Z) g(t,y, Z, par), tau, phi, tspan,options);
- if strcmp(model, 'MG')
-solSINDy = dde23(@(t,y, Z) gSINDy(t, y, Z, Xi, polyorder,usesine, model,bestPar3), tau, phi, tspan, options);
- else
-solSINDy = dde23(@(t,y, Z) gSINDy(t, y, Z, Xi, polyorder,usesine, model), tau, phi, tspan, options);
- end
-t_all = linspace(0,T,N);
-x_sindy=deval(solSINDy,t_ae);
-x_sol = deval(sol, t_ae);
+% options = ddeset('RelTol', 1e-5, 'AbsTol', 1e-5, 'MaxStep', 1e-2);
+% sol = dde23(@(t,y, Z) g(t,y, Z, par), tau, phi, tspan,options);
+%  if strcmp(model, 'MG')
+% solSINDy = dde23(@(t,y, Z) gSINDy(t, y, Z, Xi, polyorder,usesine, model,bestPar3), tau, phi, tspan, options);
+%  else
+% solSINDy = dde23(@(t,y, Z) gSINDy(t, y, Z, Xi, polyorder,usesine, model), tau, phi, tspan, options);
+%  end
+% t_all = linspace(0,T,N);
+% x_sindy=deval(solSINDy,t_ae);
+% x_sol = deval(sol, t_ae);
 end
