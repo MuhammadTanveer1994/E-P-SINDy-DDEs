@@ -49,11 +49,11 @@ function [bestTau, evalCount, elapsedtime, Theta_all, DX,bestpar3] = PSO(model, 
                 tau = params(1);
         end
 if strcmp(model, 'MG')
-        [g, phi, par, tspan, X_data, DX, Xi, Theta_all, x_sindy, x_sol] = Eopt(model, tau, par(3));
+        [g, phi, par, tspan, X_data, DX, Xi, Theta_all] = Eopt(model, tau, par(3));
 else
-        [g, phi, par, tspan, X_data, DX, Xi, Theta_all, x_sindy, x_sol] = Eopt(model, tau, par);
+        [g, phi, par, tspan, X_data, DX, Xi, Theta_all] = Eopt(model, tau, par);
 end
-        err = norm(DX_true - Theta_all * Xi, 2) + norm(x_sol - x_sindy, 2);
+        err = norm(DX_true - Theta_all * Xi, 2);
         objective = err;
 
         evalCount = evalCount + 1;
