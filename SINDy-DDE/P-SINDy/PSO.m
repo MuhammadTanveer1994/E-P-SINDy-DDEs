@@ -21,9 +21,9 @@ iterCount = 0;
                 tau = params(1);
         end
 
-        [g, phi, par, tspan, X_data, DX, Xi, Theta_all, x_sindy, x_sol] = Popt(model, tau, par);
+        [g, phi, par, tspan, X_data, DX, Xi, Theta_all] = Popt(model, tau, par);
 
-        err = norm(DX_true - Theta_all * Xi, 2) + norm(x_sol - x_sindy, 2);
+        err = norm(DX_true - Theta_all * Xi, 2);
         objective = err;
 
         evalCount = evalCount + 1;
