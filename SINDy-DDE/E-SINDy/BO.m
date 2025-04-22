@@ -46,7 +46,7 @@ evalCount =0;
             otherwise
                 [g,phi,par,tspan,X_data, DX,Xi,Theta_all]  = Eopt(model, params.tau);
         end
-        err = norm(DX_true - Theta_all * Xi, 2);%+norm(x_sol-x_sindy,2);
+        err = norm(DX_true - Theta_all * Xi, 2);
         objective = err; 
        evalCount = evalCount + 1;
        
