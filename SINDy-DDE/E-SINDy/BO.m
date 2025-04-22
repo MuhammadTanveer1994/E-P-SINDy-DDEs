@@ -38,15 +38,15 @@ evalCount =0;
     function objective = optimizeParameters(params)
         switch model
              case 'tau_3'
-                [g,phi,par,tspan,X_data, DX,Xi,Theta_all,x_sindy,x_sol] = Eopt(model, [params.tau1, params.tau2,params.tau3]);
+                [g,phi,par,tspan,X_data, DX,Xi,Theta_all] = Eopt(model, [params.tau1, params.tau2,params.tau3]);
             case {'Rossler1', 'Rossler2'}
-                [g,phi,par,tspan,X_data, DX,Xi,Theta_all,x_sindy,x_sol] = Eopt(model, [params.tau1, params.tau2]);
+                [g,phi,par,tspan,X_data, DX,Xi,Theta_all] = Eopt(model, [params.tau1, params.tau2]);
             case 'MG'
-               [g,phi,par,tspan,X_data, DX,Xi,Theta_all,x_sindy,x_sol] = Eopt(model, params.tau, params.par3);
+               [g,phi,par,tspan,X_data, DX,Xi,Theta_all] = Eopt(model, params.tau, params.par3);
             otherwise
-                [g,phi,par,tspan,X_data, DX,Xi,Theta_all,x_sindy,x_sol]  = Eopt(model, params.tau);
+                [g,phi,par,tspan,X_data, DX,Xi,Theta_all]  = Eopt(model, params.tau);
         end
-        err = norm(DX_true - Theta_all * Xi, 2)+norm(x_sol-x_sindy,2);
+        err = norm(DX_true - Theta_all * Xi, 2);%+norm(x_sol-x_sindy,2);
         objective = err; 
        evalCount = evalCount + 1;
        
